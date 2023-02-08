@@ -192,7 +192,7 @@ wait_for_workflow_to_finish() {
   readarray -t $response < <(jq --compact-output '.[]' input.json)
 
   # iterate through the Bash array  
-  for item in "${my_array[@]}"; do
+  for item in "${response[@]}"; do
   echo $item
   # do your stuff
   done
