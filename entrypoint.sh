@@ -177,7 +177,7 @@ wait_for_workflow_to_finish() {
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/jobs/${last_workflow_id}/${last_workflow_url})
   then
-    echo "$response"
+    echo "response"
   else
     echo >&2 "failed to comment to ${INPUT_COMMENT_DOWNSTREAM_URL}:"
   fi
