@@ -8,8 +8,7 @@ jobs:
     name: Run self-test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: ./
+      - uses: robinatwork1999/trigeerwf@main
         with:
             owner: robinatwork1999
             repo: product-commerce
