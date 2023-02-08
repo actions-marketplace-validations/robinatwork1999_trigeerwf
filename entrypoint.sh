@@ -172,7 +172,7 @@ wait_for_workflow_to_finish() {
     -H "X-GitHub-Api-Version: 2022-11-28" \
     ${GITHUB_API_URL}/repos/${INPUT_OWNER}/${INPUT_REPO}/pulls?state=open | jq -r '.[].html_url')
     then
-    if [ -z "$response" ]
+    if [ ! -z "$response" ]
      then 
      echo $response[0]
      fi 
