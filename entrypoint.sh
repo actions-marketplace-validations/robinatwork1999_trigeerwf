@@ -174,7 +174,7 @@ wait_for_workflow_to_finish() {
     then
     if [ ! -z "$response" ]
      then 
-     echo $response[0]
+     echo {$response[0]}
      fi 
     else
     echo "PR Link Not Fetched Due To Some Error"
