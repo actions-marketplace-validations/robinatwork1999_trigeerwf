@@ -171,18 +171,6 @@ wait_for_workflow_to_finish() {
   last_workflow_url="${GITHUB_SERVER_URL}/${INPUT_OWNER}/${INPUT_REPO}/actions/runs/${last_workflow_id}"
 
 
-  if response=$(curl \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer ${INPUT_COMMENT_GITHUB_TOKEN}"\
-  -H "X-GitHub-Api-Version: 2022-11-28" \
-  https://api.github.com/repos/robinatwork1999/product-commerce/actions/runs/${last_workflow_id}/logs)
-  then
-    echo "response=$response"
-  else
-    echo >&2 "failed to comment to ${INPUT_COMMENT_DOWNSTREAM_URL}:"
-  fi
-
-
   echo "Waiting for workflow to finish:"
   echo "The workflow id is [${last_workflow_id}]."
   echo "The workflow logs can be found at ${last_workflow_url}"
@@ -192,6 +180,17 @@ wait_for_workflow_to_finish() {
 
   if [ -n "${INPUT_COMMENT_DOWNSTREAM_URL}" ]; then
     comment_downstream_link ${last_workflow_url}
+  fi
+
+  if response=$(curl \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer ${INPUT_COMMENT_GITHUB_TOKEN}"\
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/robinatwork1999/product-commerce/actions/runs/${last_workflow_id}/logs)
+  then
+    echo "response=$response"
+  else
+    echo >&2 "failed to comment to ${INPUT_COMMENT_DOWNSTREAM_URL}:"
   fi
 
   conclusion=null
