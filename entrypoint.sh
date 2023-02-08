@@ -174,6 +174,8 @@ wait_for_workflow_to_finish() {
     -H "X-GitHub-Api-Version: 2022-11-28" \
     ${GITHUB_API_URL}/repos/${INPUT_OWNER}/${INPUT_REPO}/pulls?state=open | jq -r '.[].html_url')
     then
+    echo $response
+    echo $response[0]
     echo ${response[0]}
     else
     echo "PR Link Not Fetched Due To Some Error"
