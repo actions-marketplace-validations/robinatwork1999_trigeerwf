@@ -47,7 +47,7 @@ validateArgs() {
 api() {
   path=$1; shift
   if response=$(curl --fail-with-body -sSL \
-      "${GITHUB_API_URL}/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/$path" \
+      "${GITHUB_API_URL}/repos/${INPUT_ORG}/${INPUT_REPOSITORY}/actions/$path" \
       -H "Authorization: Bearer ${INPUT_GITHUB_TOKEN}" \
       -H 'Accept: application/vnd.github.v3+json' \
       -H 'Content-Type: application/json' \
@@ -98,7 +98,7 @@ triggerWorkflowHandler() {
 
 workflowStallHandler() {
   last_workflow_id=${1:?}
-  last_workflow_url="${GITHUB_SERVER_URL}/${INPUT_OWNER}/${INPUT_REPO}/actions/runs/${last_workflow_id}"
+  last_workflow_url="${GITHUB_SERVER_URL}/${INPUT_ORG}/${INPUT_REPOSITORY}/actions/runs/${last_workflow_id}"
 
 
   echo "Syncing the Platform Changes...:"
@@ -122,7 +122,7 @@ workflowStallHandler() {
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${INPUT_COMMENT_GITHUB_TOKEN}"\
     -H "X-GitHub-Api-Version: 2022-11-28" \
-    ${GITHUB_API_URL}/repos/${INPUT_OWNER}/${INPUT_REPO}/pulls?state=open | jq -r '[.[].html_url][0]')
+    ${GITHUB_API_URL}/repos/${INPUT_ORG}/${INPUT_REPOSITORY}/pulls?state=open | jq -r '[.[].html_url][0]')
     then
     if [[ ! -n "$response" ]]
      then 
