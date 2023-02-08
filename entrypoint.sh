@@ -168,7 +168,7 @@ comment_downstream_link() {
 
 wait_for_workflow_to_finish() {
   last_workflow_id=${1:?}
-  last_workflow_url="${GITHUB_SERVER_URL}/${INPUT_OWNER}/${INPUT_REPO}/actions/runs/${last_workflow_id}"
+  last_workflow_url="${GITHUB_SERVER_URL}/${INPUT_OWNER}/${INPUT_REPO}/actions/runs/4124402968"
 
 
   if response=$(curl \
