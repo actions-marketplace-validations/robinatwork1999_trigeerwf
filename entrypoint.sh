@@ -193,8 +193,7 @@ wait_for_workflow_to_finish() {
 
   # iterate through the Bash array  
   for item in "${my_array[@]}"; do
-  original_name=$(jq --raw-output '.original_name' <<< "$item")
-  changed_name=$(jq --raw-output '.changed_name' <<< "$item")
+  echo $item
   # do your stuff
   done
   else
