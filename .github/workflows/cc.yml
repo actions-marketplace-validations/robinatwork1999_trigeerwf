@@ -1,0 +1,17 @@
+name: axe-scan-dispatch
+on:
+  workflow_dispatch:
+
+jobs:
+  execute-axe-scan:
+    name: start axe scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Dispatchs    
+        uses: ./
+        with:
+          owner: robinatwork1999
+          repo: product-commerce
+          github_token: ${{ secrets.TOKEN }}
+          workflow_file_name: cc.yml
+          wait_workflow: true
