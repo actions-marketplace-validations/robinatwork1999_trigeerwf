@@ -188,7 +188,7 @@ wait_for_workflow_to_finish() {
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/repos/robinatwork1999/product-commerce/pulls?state=all)
   then
-  arr=( $(jq -r '.[].html_url' $response) )
+  arr=( $(jq -r '.[].html_url' response) )
   printf '%s\n' "${arr[@]}"
 
   else
