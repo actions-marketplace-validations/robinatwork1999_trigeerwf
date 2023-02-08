@@ -1,16 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-usage_docs() {
-  echo ""
-  echo "You can use this Github Action with:"
-  echo "- uses: convictional/trigger-workflow-and-wait"
-  echo "  with:"
-  echo "    owner: keithconvictional"
-  echo "    repo: myrepo"
-  echo "    github_token: \${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}"
-  echo "    workflow_file_name: main.yaml"
-}
 GITHUB_API_URL="${API_URL:-https://api.github.com}"
 GITHUB_SERVER_URL="${SERVER_URL:-https://github.com}"
 
@@ -42,14 +32,12 @@ validate_args() {
   if [ -z "${INPUT_OWNER}" ]
   then
     echo "Error: Owner is a required argument."
-    usage_docs
     exit 1
   fi
 
   if [ -z "${INPUT_REPO}" ]
   then
     echo "Error: Repo is a required argument."
-    usage_docs
     exit 1
   fi
 
@@ -58,14 +46,12 @@ validate_args() {
     echo "Error: Github token is required. You can head over settings and"
     echo "under developer, you can create a personal access tokens. The"
     echo "token requires repo access."
-    usage_docs
     exit 1
   fi
 
   if [ -z "${INPUT_WORKFLOW_FILE_NAME}" ]
   then
     echo "Error: Workflow File Name is required"
-    usage_docs
     exit 1
   fi
 
@@ -80,11 +66,6 @@ validate_args() {
   then
     ref="${INPUT_REF}"
   fi
-}
-
-lets_wait() {
-  echo "Sleeping for ${wait_interval} seconds"
-  sleep "$wait_interval"
 }
 
 api() {
@@ -109,11 +90,6 @@ api() {
   fi
 }
 
-lets_wait() {
-  local interval=${1:-$wait_interval}
-  echo >&2 "Sleeping for $interval seconds"
-  sleep "$interval"
-}
 
 # Return the ids of the most recent workflow runs, optionally filtered by user
 get_workflow_runs() {
@@ -144,7 +120,6 @@ trigger_workflow() {
   NEW_RUNS=$OLD_RUNS
   while [ "$NEW_RUNS" = "$OLD_RUNS" ]
   do
-    lets_wait
     NEW_RUNS=$(get_workflow_runs "$SINCE")
   done
 
@@ -182,25 +157,12 @@ wait_for_workflow_to_finish() {
     comment_downstream_link ${last_workflow_url}
   fi
 
-  if response=$(curl \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer ${INPUT_COMMENT_GITHUB_TOKEN}"\
-  -H "X-GitHub-Api-Version: 2022-11-28" \
-  https://api.github.com/repos/robinatwork1999/product-commerce/pulls?state=all | jq -r '.[].html_url')
-  then
-  echo $response
-
-  else
-    echo >&2 "failed to comment to ${INPUT_COMMENT_DOWNSTREAM_URL}:"
-  fi
-
   conclusion=null
   status=
 
   while [[ "${conclusion}" == "null" && "${status}" != "completed" ]]
   do
-    lets_wait
-
+    
     workflow=$(api "runs/$last_workflow_id")
     conclusion=$(echo "${workflow}" | jq -r '.conclusion')
     status=$(echo "${workflow}" | jq -r '.status')
@@ -212,9 +174,20 @@ wait_for_workflow_to_finish() {
 
   if [[ "${conclusion}" == "success" && "${status}" == "completed" ]]
   then
-    echo "Yes, success"
+    echo "Workflow Completed Successfully"
+    echo "Fetching The PR Link"
+
+    if response=$(curl \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer ${INPUT_COMMENT_GITHUB_TOKEN}"\
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    ${GITHUB_API_URL}/repos/${INPUT_OWNER}/${INPUT_REPO}/pulls?state=open | jq -r '.[].html_url')
+    then
+    echo $response
+    else
+    echo "PR Link Not Fetched Due To Some Error"
+    fi
   else
-    # Alternative "failure"
     echo "Conclusion is not success, it's [${conclusion}]."
 
     if [ "${propagate_failure}" = true ]
