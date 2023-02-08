@@ -166,7 +166,7 @@ wait_for_workflow_to_finish() {
     echo "Workflow Completed Successfully"
     echo "Fetching The PR Link"
 
-    if response=$(curl \
+    if response=$(curl -X \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${INPUT_COMMENT_GITHUB_TOKEN}"\
     -H "X-GitHub-Api-Version: 2022-11-28" \
