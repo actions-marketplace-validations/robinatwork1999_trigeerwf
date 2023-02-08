@@ -170,11 +170,11 @@ wait_for_workflow_to_finish() {
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${INPUT_COMMENT_GITHUB_TOKEN}"\
     -H "X-GitHub-Api-Version: 2022-11-28" \
-    ${GITHUB_API_URL}/repos/${INPUT_OWNER}/${INPUT_REPO}/pulls?state=open | jq -r '.[].html_url')
+    ${GITHUB_API_URL}/repos/${INPUT_OWNER}/${INPUT_REPO}/pulls?state=open | jq -r '[.[].html_url][0]')
     then
     if [ ! -z "$response" ]
      then 
-     echo ${response[0]}
+     echo $response
      fi 
     else
     echo "PR Link Not Fetched Due To Some Error"
