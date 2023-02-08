@@ -188,8 +188,14 @@ wait_for_workflow_to_finish() {
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/repos/robinatwork1999/product-commerce/pulls?state=all)
   then
-    jq -c '.[]' $response | while read i; do
-    echo $i
+  # read each item in the JSON array to an item in the Bash array
+  readarray -t $response < <(jq --compact-output '.[]' input.json)
+
+  # iterate through the Bash array  
+  for item in "${my_array[@]}"; do
+  original_name=$(jq --raw-output '.original_name' <<< "$item")
+  changed_name=$(jq --raw-output '.changed_name' <<< "$item")
+  # do your stuff
   done
   else
     echo >&2 "failed to comment to ${INPUT_COMMENT_DOWNSTREAM_URL}:"
