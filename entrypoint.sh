@@ -107,8 +107,6 @@ trigger_workflow() {
   OLD_RUNS=$(get_workflow_runs "$SINCE")
 
   echo >&2 "Triggering workflow:"
-  echo >&2 "  workflows/${INPUT_WORKFLOW_FILE_NAME}/dispatches"
-  echo >&2 "  {\"ref\":\"${ref}\",\"inputs\":${client_payload}}"
 
   api "workflows/${INPUT_WORKFLOW_FILE_NAME}/dispatches" \
     --data "{\"ref\":\"${ref}\",\"inputs\":${client_payload}}"
@@ -168,13 +166,13 @@ wait_for_workflow_to_finish() {
     echo "Workflow Completed Successfully"
     echo "Fetching The PR Link"
 
-    if response=$(curl \
+    if response=$(curl --fail-with-body -sSL -X \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${INPUT_COMMENT_GITHUB_TOKEN}"\
     -H "X-GitHub-Api-Version: 2022-11-28" \
     ${GITHUB_API_URL}/repos/${INPUT_OWNER}/${INPUT_REPO}/pulls?state=open | jq -r '.[].html_url')
     then
-    echo $response[0]
+    if [[ $response[0] ]]; then echo $response[0]; fi 
     else
     echo "PR Link Not Fetched Due To Some Error"
     fi
