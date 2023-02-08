@@ -54,7 +54,5 @@ outputs:
   conclusion:
     description: Conclusion of the job, i.e pass/failure
 runs:
-  using: "composite"
-  steps:
-    - run: ${{ github.action_path }}/entrypoint.sh
-      shell: bash
+  using: 'docker'
+  image: 'Dockerfile'
