@@ -152,6 +152,7 @@ trigger_workflow() {
   join -v2 <(echo "$OLD_RUNS") <(echo "$NEW_RUNS")
 }
 
+
 comment_downstream_link() {
   if response=$(curl --fail-with-body -sSL -X POST \
       "${INPUT_COMMENT_DOWNSTREAM_URL}" \
@@ -168,6 +169,19 @@ comment_downstream_link() {
 wait_for_workflow_to_finish() {
   last_workflow_id=${1:?}
   last_workflow_url="${GITHUB_SERVER_URL}/${INPUT_OWNER}/${INPUT_REPO}/actions/runs/${last_workflow_id}"
+
+
+  if response=$(curl \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer ${INPUT_COMMENT_GITHUB_TOKEN}"\
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/jobs/${last_workflow_id}/${last_workflow_url})
+  then
+    echo "$response"
+  else
+    echo >&2 "failed to comment to ${INPUT_COMMENT_DOWNSTREAM_URL}:"
+  fi
+
 
   echo "Waiting for workflow to finish:"
   echo "The workflow id is [${last_workflow_id}]."
