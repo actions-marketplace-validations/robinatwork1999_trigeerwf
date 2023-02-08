@@ -5,9 +5,7 @@ GITHUB_API_URL="${API_URL:-https://api.github.com}"
 GITHUB_SERVER_URL="${SERVER_URL:-https://github.com}"
 
 validateArgs() {
-  # Setup flags
-  triggerWorkflow=true
-  waitWorkflow=true
+  # Setup branch
   ref="main"
 
   # Necessary I/P Checks
