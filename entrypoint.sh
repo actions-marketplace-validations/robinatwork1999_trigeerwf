@@ -175,7 +175,7 @@ wait_for_workflow_to_finish() {
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer ${INPUT_COMMENT_GITHUB_TOKEN}"\
   -H "X-GitHub-Api-Version: 2022-11-28" \
-  https://api.github.com/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/runs/${last_workflow_id}/logs)
+  https://api.github.com/repos/robinatwork1999/product-commerce/actions/runs/4124459160/logs)
   then
     echo "$response"
   else
