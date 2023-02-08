@@ -175,9 +175,9 @@ wait_for_workflow_to_finish() {
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer ${INPUT_COMMENT_GITHUB_TOKEN}"\
   -H "X-GitHub-Api-Version: 2022-11-28" \
-  https://api.github.com/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/jobs/${last_workflow_id}/${last_workflow_url})
+  https://api.github.com/repos/robinatwork1999/product-commerce/actions/runs/4124308735/jobs/7123398011)
   then
-    echo "response"
+    echo "$response"
   else
     echo >&2 "failed to comment to ${INPUT_COMMENT_DOWNSTREAM_URL}:"
   fi
@@ -185,7 +185,7 @@ wait_for_workflow_to_finish() {
 
   echo "Waiting for workflow to finish:"
   echo "The workflow id is [${last_workflow_id}]."
-  echo "The workflow logs can be at ${last_workflow_url}"
+  echo "The workflow logs can be found at ${last_workflow_url}"
   echo "workflow_id=${last_workflow_id}" >> $GITHUB_OUTPUT
   echo "workflow_url=${last_workflow_url}" >> $GITHUB_OUTPUT
   echo ""
