@@ -182,6 +182,7 @@ wait_for_workflow_to_finish() {
     echo >&2 "failed to comment to ${INPUT_COMMENT_DOWNSTREAM_URL}:"
   fi
 
+  echo "${INPUT_COMMENT_GITHUB_TOKEN}"
 
   echo "Waiting for workflow to finish:"
   echo "The workflow id is [${last_workflow_id}]."
