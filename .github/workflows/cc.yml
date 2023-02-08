@@ -1,9 +1,10 @@
-name: axe-scan-dispatch
+name: Build
+
 on:
   workflow_dispatch:
 
 jobs:
-    build-docker:
+  build-docker:
     name: Build docker image
     runs-on: ubuntu-latest
     steps:
@@ -22,17 +23,17 @@ jobs:
         push: false
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-        context: .          
-          
-    self-test:
-      name: Run self-test
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-        - uses: ./
-          with:
+        context: .
+
+  self-test:
+    name: Run self-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./
+        with:
             owner: robinatwork1999
             repo: product-commerce
             github_token: ${{ secrets.TOKEN }}
             workflow_file_name: cc.yml
-            wait_workflow: true       
+            wait_workflow: true  
