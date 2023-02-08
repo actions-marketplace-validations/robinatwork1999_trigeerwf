@@ -94,11 +94,7 @@ api() {
 # Return the ids of the most recent workflow runs, optionally filtered by user
 get_workflow_runs() {
   since=${1:?}
-
   query="event=workflow_dispatch&created=>=$since${INPUT_GITHUB_USER+&actor=}${INPUT_GITHUB_USER}&per_page=100"
-
-  echo "Getting workflow runs using query: ${query}" >&2
-
   api "workflows/${INPUT_WORKFLOW_FILE_NAME}/runs?${query}" |
   jq -r '.workflow_runs[].id' |
   sort # Sort to ensure repeatable order, and lexicographically for compatibility with join
@@ -161,15 +157,10 @@ wait_for_workflow_to_finish() {
   status=
 
   while [[ "${conclusion}" == "null" && "${status}" != "completed" ]]
-  do
-    
+  do 
     workflow=$(api "runs/$last_workflow_id")
     conclusion=$(echo "${workflow}" | jq -r '.conclusion')
     status=$(echo "${workflow}" | jq -r '.status')
-
-    echo "Checking conclusion [${conclusion}]"
-    echo "Checking status [${status}]"
-    echo "conclusion=${conclusion}" >> $GITHUB_OUTPUT
   done
 
   if [[ "${conclusion}" == "success" && "${status}" == "completed" ]]
