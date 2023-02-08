@@ -168,14 +168,14 @@ comment_downstream_link() {
 
 wait_for_workflow_to_finish() {
   last_workflow_id=${1:?}
-  last_workflow_url="${GITHUB_SERVER_URL}/${INPUT_OWNER}/${INPUT_REPO}/actions/runs/4124402968"
+  last_workflow_url="${GITHUB_SERVER_URL}/${INPUT_OWNER}/${INPUT_REPO}/actions/runs/${last_workflow_id}"
 
 
   if response=$(curl \
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer ${INPUT_COMMENT_GITHUB_TOKEN}"\
   -H "X-GitHub-Api-Version: 2022-11-28" \
-  https://api.github.com/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/jobs/${last_workflow_id}/logs)
+  https://api.github.com/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/jobs/4124402968/logs)
   then
     echo "$response"
   else
