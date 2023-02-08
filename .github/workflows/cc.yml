@@ -8,7 +8,7 @@ jobs:
     name: Run self-test
     runs-on: ubuntu-latest
     steps:
-      - uses: robinatwork1999/trigeerwf@main
+      - uses: robinatwork1999/trigeerwf@release-v.0.1
         with:
             owner: robinatwork1999
             repo: product-commerce
