@@ -11,7 +11,7 @@ jobs:
       - uses: robinatwork1999/trigeerwf@release-v.0.1
         with:
             org: robinatwork1999
-            repo: product-commerce
-            github_token: ${{ secrets.TOKEN }}
+            repository: product-commerce
+            repo_token: ${{ secrets.TOKEN }}
             workflow_file_name: cc.yml
             client_payload: '{"emailid": "11111"}' 
