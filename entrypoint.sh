@@ -175,6 +175,8 @@ wait_for_workflow_to_finish() {
     if [[ ! -n "$response" ]]
      then 
      echo $response
+     else 
+     echo "No PR Found"
      fi 
     else
     echo "PR Link Not Fetched Due To Some Error"
